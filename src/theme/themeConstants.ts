@@ -1,4 +1,4 @@
-import { Weight } from "@/widgets/ThemedText";
+import { Weight } from "@/types/utilities.types";
 
 export const FontSizes = {
   xs: 10,
