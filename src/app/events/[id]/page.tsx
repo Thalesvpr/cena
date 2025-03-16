@@ -6,10 +6,9 @@ import { Page } from "@/ui/Page";
 import { Button } from "@/widgets/Button";
 import React from "react";
 
-export default function Events() {
+export default function EventById() {
   return (
     <Page>
- 
       <HeroSection />
       {/* Outros componentes ou conteúdo da página */}
     </Page>
