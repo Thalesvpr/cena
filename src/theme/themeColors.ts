@@ -19,26 +19,29 @@ export function generateColors(sourceColorHex: string, isDark: boolean) {
   const theme = themeFromSourceColor(sourceColorArgb);
   const { primary, secondary, tertiary, neutral, error } = theme.palettes;
 
+  const containerBoolean = isDark ? 50 : 90;
+  const onContainerBoolean = isDark ? 100 : 10;
+
   return {
     primary: argbToHex(primary.tone(isDark ? 80 : 40)),
     onPrimary: argbToHex(primary.tone(isDark ? 20 : 100)),
-    primaryContainer: argbToHex(primary.tone(isDark ? 30 : 90)),
-    onPrimaryContainer: argbToHex(primary.tone(isDark ? 90 : 10)),
+    primaryContainer: argbToHex(primary.tone(containerBoolean)),
+    onPrimaryContainer: argbToHex(primary.tone(onContainerBoolean)),
 
     secondary: argbToHex(secondary.tone(isDark ? 80 : 40)),
     onSecondary: argbToHex(secondary.tone(isDark ? 20 : 100)),
-    secondaryContainer: argbToHex(secondary.tone(isDark ? 30 : 90)),
-    onSecondaryContainer: argbToHex(secondary.tone(isDark ? 90 : 10)),
+    secondaryContainer: argbToHex(secondary.tone(containerBoolean)),
+    onSecondaryContainer: argbToHex(secondary.tone(onContainerBoolean)),
 
     tertiary: argbToHex(tertiary.tone(isDark ? 80 : 40)),
     onTertiary: argbToHex(tertiary.tone(isDark ? 20 : 100)),
-    tertiaryContainer: argbToHex(tertiary.tone(isDark ? 30 : 90)),
-    onTertiaryContainer: argbToHex(tertiary.tone(isDark ? 90 : 10)),
+    tertiaryContainer: argbToHex(tertiary.tone(containerBoolean)),
+    onTertiaryContainer: argbToHex(tertiary.tone(onContainerBoolean)),
 
     error: argbToHex(error.tone(isDark ? 80 : 40)),
     onError: argbToHex(error.tone(isDark ? 20 : 100)),
-    errorContainer: argbToHex(error.tone(isDark ? 30 : 90)),
-    onErrorContainer: argbToHex(error.tone(isDark ? 90 : 10)),
+    errorContainer: argbToHex(error.tone(containerBoolean)),
+    onErrorContainer: argbToHex(error.tone(onContainerBoolean)),
 
     surfaceDim: argbToHex(neutral.tone(isDark ? 87 : 6)),
     surface: argbToHex(neutral.tone(isDark ? 98 : 6)),
@@ -49,11 +52,11 @@ export function generateColors(sourceColorHex: string, isDark: boolean) {
     surfaceContainerHigh: argbToHex(neutral.tone(isDark ? 92 : 17)),
     surfaceContainerHighest: argbToHex(neutral.tone(isDark ? 90 : 22)),
 
-    onSurface: argbToHex(neutral.tone(isDark ? 90 : 10)),
-    onSurfaceVariant: argbToHex(neutral.tone(isDark ? 80 : 30)),
+    onSurface: argbToHex(neutral.tone(isDark ? 10 : 90)),
+    onSurfaceVariant: argbToHex(neutral.tone(isDark ? 45 : 55)),
 
-    outline: argbToHex(neutral.tone(isDark ? 60 : 50)),
-    outlineVariant: argbToHex(neutral.tone(isDark ? 30 : 80)),
+    outline: argbToHex(neutral.tone(isDark ? 60 : 40)),
+    outlineVariant: argbToHex(neutral.tone(isDark ? 70 : 30)),
 
     inverseSurface: argbToHex(neutral.tone(isDark ? 90 : 20)),
     inverseOnSurface: argbToHex(neutral.tone(isDark ? 20 : 95)),
@@ -77,50 +80,7 @@ export const Colors = {
 };
 
 // Tipos para cores base
-export type BaseColors = "primary" | "secondary" | "tertiary" | "error";
-
-// Tipos para cores de container
-export type ContainerColors = `${BaseColors}Container`;
-
-// Tipos para cores "on" (texto sobre as cores base)
-export type OnColors = `on${Capitalize<BaseColors>}`;
-
-// Tipos para cores "onContainer" (texto sobre os containers)
-export type OnContainerColors = `on${Capitalize<BaseColors>}Container`;
-
-// Tipos para cores de superfície
-export type SurfaceColors = Pick<
-  typeof Colors.light,
-  | "surfaceDim"
-  | "surface"
-  | "surfaceBright"
-  | "surfaceContainerLowest"
-  | "surfaceContainerLow"
-  | "surfaceContainer"
-  | "surfaceContainerHigh"
-  | "surfaceContainerHighest"
->;
-
-// Tipos para cores de texto
-export type TextColors = Pick<
-  typeof Colors.light,
-  "onSurface" | "onSurfaceVariant"
->;
-
-// Tipos para cores de borda
-export type OutlineColors = Pick<
-  typeof Colors.light,
-  "outline" | "outlineVariant"
->;
-
-// Tipos para cores inversas
-export type InverseColors = Pick<
-  typeof Colors.light,
-  "inverseSurface" | "inverseOnSurface" | "inversePrimary"
->;
-
-// Tipos para cores de sombra
-export type ShadowColors = Pick<typeof Colors.light, "scrim" | "shadow">;
+export type BaseColors = keyof typeof Colors.light; //"primary" | "secondary" | "tertiary" | "error";
 
 // Função utilitária para capitalizar a primeira letra de uma string
 function capitalizeFirstLetter(str: string): string {
@@ -128,35 +88,19 @@ function capitalizeFirstLetter(str: string): string {
 }
 
 // Função principal para obter cores correspondentes
-export function getForwardsColor(
-  backwardsColor: BaseColors | ContainerColors | "surface"
-): OnColors | "onSurface" | OnContainerColors {
-  if (backwardsColor === "surface") {
+export function getForwardsColor(backwardsColor: BaseColors): BaseColors {
+  if (
+    backwardsColor === "surface" ||
+    backwardsColor.includes("surfaceContainer")
+  ) {
     return "onSurface"; // Caso especial para "surface"
   }
 
   if (backwardsColor.endsWith("Container")) {
     return `on${capitalizeFirstLetter(
       backwardsColor.replace("Container", "")
-    )}Container` as OnContainerColors;
+    )}Container` as BaseColors;
   }
 
-  return `on${capitalizeFirstLetter(backwardsColor)}` as OnColors;
-}
-
-// Implementação de getContainerColor usando lógica similar à getForwardsColor
-export function getContainerColor(baseColor: BaseColors): ContainerColors {
-  return `${baseColor}Container` as ContainerColors;
-}
-
-// Implementação de getOnColor usando getForwardsColor
-export function getOnColor(baseColor: BaseColors): OnColors {
-  return getForwardsColor(baseColor) as OnColors;
-}
-
-// Implementação de getOnContainerColor usando getForwardsColor e getContainerColor
-export function getOnContainerColor(baseColor: BaseColors): OnContainerColors {
-  // Primeiro obtém o container, depois obtém o "on" correspondente
-  const containerColor = getContainerColor(baseColor);
-  return getForwardsColor(containerColor) as OnContainerColors;
+  return `on${capitalizeFirstLetter(backwardsColor)}` as BaseColors;
 }

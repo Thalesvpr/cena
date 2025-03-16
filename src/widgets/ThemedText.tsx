@@ -1,54 +1,64 @@
+"use client";
+
 import React from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import {
-  BaseColors,
-  ContainerColors,
-  getForwardsColor,
-} from "@/theme/themeColors";
-
-
-export type Weight =   "100"
-| "200"
-| "300"
-| "400"
-| "500"
-| "600"
-| "700"
-| "800"
-| "900";
+import { BaseColors } from "@/theme/themeColors";
+import { Size, Weight } from "@/types/utilities.types";
 
 export type ThemedTextProps = React.HTMLAttributes<HTMLParagraphElement> & {
-  backwardsColor?: BaseColors | ContainerColors | "surface";
-  themeColor?: BaseColors | ContainerColors | "surface" | "outline";
-  fontSize?: number;
+  themeColor?: BaseColors;
+  fontSize?: Size;
   fontWeight?: Weight;
-  lineHeight?: number;
+  lineHeight?: number | string;
   nowrap?: boolean;
 };
 
+/**
+ * Verifica se o valor de `fontSize` é um número ou uma string com unidades válidas.
+ */
+function isValidFontSize(fontSize: Size): boolean {
+  if (typeof fontSize === "number") {
+    return true; // É um número
+  }
+
+  // Verifica se é uma string com unidades válidas
+  const validUnits = ["px", "rem", "em", "%", "vh", "vw"];
+  const regex = new RegExp(`^\\d+(${validUnits.join("|")})$`);
+  return regex.test(fontSize);
+}
+
 export function ThemedText({
   style,
-  themeColor,
-  backwardsColor = "surface",
+  themeColor = "onSurface",
   fontSize,
   fontWeight,
   lineHeight,
   nowrap,
   ...rest
 }: ThemedTextProps) {
-  const forwordsThemeColor = useThemeColor(getForwardsColor(backwardsColor));
-  const color = useThemeColor(themeColor ? themeColor : "error");
+  const color = useThemeColor(themeColor);
 
-  const className = `text-${fontSize} font-${fontWeight} leading-${lineHeight} ${
-    nowrap ? "whitespace-nowrap" : ""
-  }`;
+  // Verifica se o fontSize é válido
+  const validatedFontSize =
+    fontSize !== undefined && isValidFontSize(fontSize)
+      ? typeof fontSize === "number"
+        ? `${fontSize}px` // Converte número para px
+        : fontSize // Mantém a string com unidades
+      : undefined;
 
   return (
     <p
-      className={className}
       style={{
-        color: themeColor ? color : forwordsThemeColor,
-        fontFamily: "Inter",
+        color,
+        fontSize: validatedFontSize, // Aplica o fontSize validado
+        fontWeight,
+        lineHeight:
+          lineHeight !== undefined
+            ? typeof lineHeight === "number"
+              ? `${lineHeight}px` // Converte número para px
+              : lineHeight // Mantém a string com unidades
+            : undefined,
+        whiteSpace: nowrap ? "nowrap" : undefined,
         ...style,
       }}
       {...rest}

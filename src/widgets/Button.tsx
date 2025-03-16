@@ -1,14 +1,13 @@
-import React from "react";
-import { useThemeColor } from "@/hooks/useThemeColor";
-
+import React, { useState } from "react";
+import { useThemeColor, useThemeColors } from "@/hooks/useThemeColor";
 import { IconName, getIcon } from "@/utils/iconUtils";
 import { BaseColors, getForwardsColor } from "@/theme/themeColors";
 import { Texts } from "./Texts";
+import { PaddingMargin, Sizes } from "@/theme/themeConstants";
 
 export interface ButtonProps {
   title?: string;
-  themeColor?: BaseColors;
-  badgeThemeColor?: BaseColors;
+  themeColor?: BaseColors | "surface";
   outline?: boolean;
   icon?: IconName; // Use a tipagem IconName
   iconPosition?: "left" | "right";
@@ -22,15 +21,23 @@ export const Button: React.FC<ButtonProps> = ({
   outline = false,
   icon,
   themeColor = "primary",
-  badgeThemeColor = "primary",
   iconPosition = "left",
   onPress,
   disabled = false,
   raw,
 }) => {
-  const backgroundColor = useThemeColor(`${themeColor}Container`);
-  const textColor = useThemeColor(
-    `${getForwardsColor(`${themeColor}Container`)}`
+  const [isHovered, setIsHovered] = useState(false);
+  const colors = useThemeColors();
+  const circleColor = useThemeColor(
+    outline || raw
+      ? (themeColor as BaseColors)
+      : getForwardsColor(`${themeColor}Container` as BaseColors)
+  );
+  const backgroundColor = useThemeColor(`${themeColor}Container` as BaseColors);
+  const iconColor = useThemeColor(
+    outline || raw
+      ? (`${themeColor}Container` as BaseColors)
+      : getForwardsColor(`${themeColor}Container` as BaseColors)
   );
   const borderColor = themeColor && useThemeColor("outlineVariant");
 
@@ -43,7 +50,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={`flex items-center justify-center rounded-full ${
+      className={`flex items-center justify-center rounded-full relative overflow-hidden ${
         outline
           ? "border-2 bg-transparent"
           : raw
@@ -53,18 +60,48 @@ export const Button: React.FC<ButtonProps> = ({
       style={{
         backgroundColor: outline || raw ? "transparent" : backgroundColor,
         borderColor: outline ? borderColor : undefined,
+        height: Sizes.touchMinimal,
+        paddingInline: isIconOnly ? 0 : PaddingMargin.md,
+        width: isIconOnly ? Sizes.touchMinimal : "auto",
+        cursor: "pointer",
       }}
       onClick={onPress}
       disabled={disabled}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Bolinha animada */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: isHovered ? "-170%" : "-100px", // Sobe ao entrar no hover
+          left: "30%",
+          transform: "translateX(-50%)",
+          width: "100px",
+          height: "100px",
+          backgroundColor: circleColor, // Cor do texto
+          borderRadius: "50%",
+          pointerEvents: "none", // Não interfere com cliques
+          opacity: isHovered ? 0.2 : 0, // Opacidade controlada pelo hover
+          transition: "bottom 0.3s ease-out, opacity 0.3s ease-out", // Transição suave
+        }}
+      />
+
+      {/* Conteúdo do botão */}
       <div className={`flex ${contentDirection} items-center gap-2.5`}>
         {icon && (
           <div className="relative w-6 h-6 flex items-center justify-center">
-            {IconComponent && <IconComponent size={20} color={textColor} />}
+            {IconComponent && <IconComponent size={20} color={iconColor} />}
           </div>
         )}
         {title && (
-          <Texts.Button backwardsColor={`${themeColor}Container`}>
+          <Texts.Button
+            themeColor={
+              outline || raw
+                ? (`${themeColor}Container` as BaseColors)
+                : getForwardsColor(`${themeColor}Container` as BaseColors)
+            }
+          >
             {title}
           </Texts.Button>
         )}

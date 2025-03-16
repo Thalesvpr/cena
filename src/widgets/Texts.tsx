@@ -65,7 +65,7 @@ export const BodyTexts = {
     <ThemedText
       {...props}
       fontSize={FontSizes.md} // 20
-      fontWeight={FontWeights.semibold}
+      fontWeight={FontWeights.light}
       lineHeight={LineHeights.md}
     />
   ),

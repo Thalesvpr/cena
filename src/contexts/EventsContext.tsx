@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useContext, useState } from "react";
 
 interface EventImage {
@@ -22,7 +23,9 @@ interface EventsContextType {
 
 const EventsContext = createContext<EventsContextType | undefined>(undefined);
 
-export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [events, setEvents] = useState<Event[]>([
     {
       id: 1,
@@ -30,9 +33,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       description: "Descrição do evento 1.",
       date: "2023-10-01",
       location: "Local 1",
-      images: [
-        { url: "/images/event1.jpg", alt: "Imagem 1" },
-      ],
+      images: [{ url: "/images/event1.jpg", alt: "Imagem 1" }],
     },
     {
       id: 2,
@@ -40,9 +41,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       description: "Descrição do evento 2.",
       date: "2023-10-02",
       location: "Local 2",
-      images: [
-        { url: "/images/event2.jpg", alt: "Imagem 2" },
-      ],
+      images: [{ url: "/images/event2.jpg", alt: "Imagem 2" }],
     },
   ]);
 
