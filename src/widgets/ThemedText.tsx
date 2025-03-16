@@ -4,10 +4,12 @@ import React from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { BaseColors } from "@/theme/themeColors";
 import { Size, Weight } from "@/types/utilities.types";
+import useMedia from "@/hooks/useMidia";
 
 export type ThemedTextProps = React.HTMLAttributes<HTMLParagraphElement> & {
   themeColor?: BaseColors;
   fontSize?: Size;
+  responsive?: boolean;
   fontWeight?: Weight;
   lineHeight?: number | string;
   nowrap?: boolean;
@@ -27,30 +29,61 @@ function isValidFontSize(fontSize: Size): boolean {
   return regex.test(fontSize);
 }
 
+/**
+ * Aplica a escala ao fontSize com base no dispositivo.
+ */
+function applyFontSizeScale(
+  fontSize: Size,
+  scaleFactor: number
+): string | undefined {
+  if (fontSize === undefined) return undefined;
+
+  if (typeof fontSize === "number") {
+    return `${fontSize / scaleFactor}px`; // Aplica a escala e converte para px
+  }
+
+  // Se for uma string, extrai o valor numérico e a unidade
+  const numericValue = parseFloat(fontSize);
+  const unit = fontSize.match(/[a-zA-Z%]+/)?.toString() || "px";
+
+  return `${numericValue / scaleFactor}${unit}`; // Aplica a escala e mantém a unidade
+}
+
 export function ThemedText({
   style,
   themeColor = "onSurface",
   fontSize,
   fontWeight,
   lineHeight,
+  responsive = true,
   nowrap,
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor(themeColor);
+  const midia = useMedia();
 
-  // Verifica se o fontSize é válido
-  const validatedFontSize =
+  // Define os fatores de escala para diferentes dispositivos
+  const scaleFactors = {
+    desktop: 1, // Sem escala para desktop
+    tablet: 1.2,
+    mobile: 1.5,
+    unknown: 1, // Padrao
+  };
+
+  // Obtém o fator de escala com base no dispositivo
+  const scaleFactor = scaleFactors[midia] || 1;
+
+  // Aplica a escala ao fontSize
+  const scaledFontSize =
     fontSize !== undefined && isValidFontSize(fontSize)
-      ? typeof fontSize === "number"
-        ? `${fontSize}px` // Converte número para px
-        : fontSize // Mantém a string com unidades
+      ? applyFontSizeScale(fontSize, scaleFactor)
       : undefined;
 
   return (
     <p
       style={{
         color,
-        fontSize: validatedFontSize, // Aplica o fontSize validado
+        fontSize: responsive ? scaledFontSize : fontSize, // Aplica o fontSize escalado
         fontWeight,
         lineHeight:
           lineHeight !== undefined

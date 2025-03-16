@@ -36,6 +36,7 @@ export const Texts = {
   ),
   Button: (props: ThemedTextProps) => (
     <ThemedText
+      responsive={false}
       {...props}
       fontSize={FontSizes.sm}
       fontWeight={FontWeights.normal}

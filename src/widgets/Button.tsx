@@ -96,6 +96,7 @@ export const Button: React.FC<ButtonProps> = ({
         )}
         {title && (
           <Texts.Button
+          
             themeColor={
               outline || raw
                 ? (`${themeColor}Container` as BaseColors)
