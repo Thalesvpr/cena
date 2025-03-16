@@ -1,10 +1,17 @@
+"use client";
+
+import { useTheme } from "@/contexts/ThemeContext";
+import { HeroSection } from "@/ui/Hero";
+import { Page } from "@/ui/Page";
+import { Button } from "@/widgets/Button";
 import React from "react";
 
-export default function EventsPage() {
+export default function Events() {
   return (
-    <div>
-      <h1>Events Page</h1>
-      {/* Your component code */}
-    </div>
+    <Page>
+ 
+      <HeroSection />
+      {/* Outros componentes ou conteúdo da página */}
+    </Page>
   );
 }
