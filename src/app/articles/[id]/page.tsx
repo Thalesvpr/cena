@@ -33,7 +33,7 @@ export default function ArticleById() {
   }
 
   return (
-    <Page>
+    <Page showBackButton>
       <ArticleComponent article={article} />
     </Page>
   );

@@ -5,8 +5,8 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { ReadingTexts } from "@/widgets/Texts";
 import { Button } from "@/widgets/Button";
 import { useArticle } from "@/hooks/useArticles";
-import { useNavigate } from "react-router-dom";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { Page } from "@/ui/Page";
 
 export default function ArticlePage() {
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function ArticlePage() {
   // if (error) return <ReadingTexts.Description>{error}</ReadingTexts.Description>;
 
   return (
-    <div className="p-6">
+    <Page showBackButton>
       {/* Título da página */}
       <ReadingTexts.Title>Artigos Recentes</ReadingTexts.Title>
 
@@ -113,7 +113,7 @@ export default function ArticlePage() {
           <ArticleCard
             key={article.id}
             article={article}
-            onReadMore={() => useNavigate()}
+            onReadMore={() => handleReadMore(article.id)}
           />
         ))}
       </div>
@@ -129,6 +129,6 @@ export default function ArticlePage() {
           />
         ))}
       </div>
-    </div>
+    </Page>
   );
 }

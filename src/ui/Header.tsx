@@ -31,7 +31,7 @@ export const Header = () => {
     >
       {/* Logo e Nome da Marca */}
       <Link href="/" className="no-underline text-inherit">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-4 md:flex-row">
           <Image
             src={metadata.brand.logourl}
             alt="Logo Cena Nacional"
@@ -48,7 +48,7 @@ export const Header = () => {
             style={{ backgroundColor: colors.onSurface }}
           ></div>
           <ThemedText
-            style={{ maxWidth: "170px" }}
+            style={{ maxWidth: "170px", textAlign: "center" }}
             fontWeight={Design.Base.FontWeights.light}
           >
             {metadata.brand.logotext}
