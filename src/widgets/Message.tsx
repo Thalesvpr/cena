@@ -8,17 +8,21 @@ import { ThemedText, ThemedTextProps } from "./ThemedText";
 interface MessageProps {
   text: string;
   position?: "left" | "right" | "center";
-  themeColor?: BaseColors; // Cor de fundo dinâmica
+  themeBackgroundColor: BaseColors; // Cor de fundo dinâmica
+  themeTextColor: BaseColors; // Cor de fundo dinâmica
+
   textProps?: ThemedTextProps; // Props para o ThemedText
 }
 
 export const Message: React.FC<MessageProps> = ({
   text,
   position = "left",
-  themeColor = "primary", // Cor de fundo padrão
+  themeBackgroundColor,
+  themeTextColor,
   textProps,
 }) => {
-  const backgroundColor = useThemeColor(`${themeColor}Container` as BaseColors);
+  const backgroundColor = useThemeColor(themeBackgroundColor);
+
   // Obtém a cor de fundo dinâmica
 
   return (
@@ -44,10 +48,7 @@ export const Message: React.FC<MessageProps> = ({
       )} */}
 
       {/* Texto com ThemedText */}
-      <ThemedText
-        themeColor={getForwardsColor(`${themeColor}Container` as BaseColors)}
-        {...textProps}
-      >
+      <ThemedText themeColor={themeTextColor} {...textProps}>
         {text}
         {/* {backgroundColor} */}
       </ThemedText>

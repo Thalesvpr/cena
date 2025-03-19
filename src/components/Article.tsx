@@ -1,6 +1,7 @@
 "use client";
 
-import { useThemeColors } from "@/hooks/useThemeColor";
+import { useThemeColor, useThemeColors } from "@/hooks/useThemeColor";
+import { BaseColors, getForwardsColor } from "@/theme/themeColors";
 import { Design } from "@/theme/themeConstants";
 import { Button } from "@/widgets/Button";
 import { Message } from "@/widgets/Message";
@@ -9,11 +10,17 @@ import React, { useState } from "react";
 
 interface ArticleProps {
   article: Article;
+  themeColor: BaseColors;
 }
 
-export const ArticleComponent: React.FC<ArticleProps> = ({ article }) => {
+export const ArticleComponent: React.FC<ArticleProps> = ({
+  article,
+  themeColor = "tertiary",
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const colors = useThemeColors();
+  const containerColor = useThemeColor(`${themeColor}Container` as BaseColors);
+  const color = useThemeColor(`${themeColor}`);
 
   return (
     <div
@@ -66,6 +73,7 @@ export const ArticleComponent: React.FC<ArticleProps> = ({ article }) => {
                   <ReadingTexts.Paragraph
                     key={index}
                     highlightFirstLetter={paragraphIndex == 1}
+                    firstLetterColor={themeColor}
                   >
                     {block.text}
                   </ReadingTexts.Paragraph>
@@ -124,15 +132,23 @@ export const ArticleComponent: React.FC<ArticleProps> = ({ article }) => {
                                 key={textIndex}
                                 className={`w-full flex ${justifyClass}`}
                               >
-                                <Message
-                                  text={text}
-                                  position={position}
-                                  themeColor={
-                                    messageIndex % 2 === 0
-                                      ? "primary"
-                                      : "secondary"
-                                  }
-                                />
+                                {messageIndex % 2 === 0 ? (
+                                  <Message
+                                    text={text}
+                                    position={position}
+                                    themeBackgroundColor={themeColor}
+                                    themeTextColor={getForwardsColor(
+                                      themeColor
+                                    )}
+                                  />
+                                ) : (
+                                  <Message
+                                    text={text}
+                                    position={position}
+                                    themeBackgroundColor={"surfaceContainer"}
+                                    themeTextColor={"onSurface"}
+                                  />
+                                )}
                               </div>
                             );
                           }
@@ -152,13 +168,21 @@ export const ArticleComponent: React.FC<ArticleProps> = ({ article }) => {
                       messageIndex % 2 === 0 ? "justify-end" : "justify-start"
                     }`}
                   >
-                    <Message
-                      text={block.text as string}
-                      position={messageIndex % 2 === 0 ? "right" : "left"}
-                      themeColor={
-                        messageIndex % 2 === 0 ? "primary" : "secondary"
-                      }
-                    />
+                    {messageIndex % 2 === 0 ? (
+                      <Message
+                        text={block.text as string}
+                        position={"right"}
+                        themeBackgroundColor={themeColor}
+                        themeTextColor={getForwardsColor(themeColor)}
+                      />
+                    ) : (
+                      <Message
+                        text={block.text as string}
+                        position={"left"}
+                        themeBackgroundColor={"surfaceContainer"}
+                        themeTextColor={"onSurface"}
+                      />
+                    )}
                   </div>
                 );
               case "quote":

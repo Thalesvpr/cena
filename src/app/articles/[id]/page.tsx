@@ -34,7 +34,7 @@ export default function ArticleById() {
 
   return (
     <Page showBackButton>
-      <ArticleComponent article={article} />
+      <ArticleComponent themeColor="tertiary" article={article} />
     </Page>
   );
 }

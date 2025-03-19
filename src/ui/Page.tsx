@@ -39,7 +39,7 @@ export const Page = ({
       {showHeader && <Header />}
       {showBackButton && (
         <div
-          className=" w-20 flex justify-end"
+          className=" w-20 flex justify-end absolute top-28"
           style={{
             marginTop: Design.Base.SpaceGaps.md,
             padding: Design.Base.PaddingMargin.sm,
@@ -49,7 +49,7 @@ export const Page = ({
           }}
         >
           <Button
-            icon="MdChevronLeft"
+            icon="MdArrowBack"
             themeColor="tertiary"
             onPress={handleBack}
           />
