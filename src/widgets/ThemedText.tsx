@@ -81,7 +81,7 @@ export function ThemedText({
     () => ({
       desktop: 1, // Sem escala para desktop
       tablet: 1.2,
-      mobile: 1.5,
+      mobile: 1.2,
       unknown: 1, // Padrao
     }),
     []

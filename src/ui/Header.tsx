@@ -12,22 +12,31 @@ import { Button } from "@/widgets/Button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { ThemedText } from "@/widgets/ThemedText";
 import { Design } from "@/theme/themeConstants";
+import { useRouter } from "next/navigation";
 
-export const Header = () => {
+interface HeaderProps {
+  showBackButton?: boolean;
+}
+
+export const Header = ({ showBackButton = false }: HeaderProps) => {
   const { toggleTheme, isDark } = useTheme();
 
   const colors = useThemeColors();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para controlar o menu
+  const router = useRouter();
 
   // Função para alternar o menu
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <header
       style={{ backgroundColor: colors.surfaceContainer }}
-      className="p-4 flex justify-between items-center"
+      className="p-4 flex justify-between items-center relative"
     >
       {/* Logo e Nome da Marca */}
       <Link href="/" className="no-underline text-inherit">
@@ -94,6 +103,24 @@ export const Header = () => {
           style={{ backgroundColor: colors.surfaceContainer }}
         >
           <Navbar isMobile={true} />
+        </div>
+      )}
+      {showBackButton && (
+        <div
+          className=" w-20 flex justify-end absolute -bottom-20 -left-2"
+          style={{
+            marginTop: Design.Base.SpaceGaps.md,
+            padding: Design.Base.PaddingMargin.sm,
+            backgroundColor: colors.surfaceContainer,
+            borderBottomRightRadius: Design.Semantic.BorderRadius.circle,
+            borderTopRightRadius: Design.Semantic.BorderRadius.circle,
+          }}
+        >
+          <Button
+            icon="MdArrowBack"
+            themeColor="tertiary"
+            onPress={handleBack}
+          />
         </div>
       )}
     </header>

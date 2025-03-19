@@ -25,36 +25,14 @@ export const Page = ({
 }: PageProps) => {
   // Obtém a cor de fundo do tema atual
   const colors = useThemeColors();
-  const router = useRouter();
-
-  const handleBack = () => {
-    router.back();
-  };
 
   return (
     <div
       className="flex flex-col min-h-screen"
       style={{ backgroundColor: colors.surface }} // Aplica a cor de fundo
     >
-      {showHeader && <Header />}
-      {showBackButton && (
-        <div
-          className=" w-20 flex justify-end absolute top-28"
-          style={{
-            marginTop: Design.Base.SpaceGaps.md,
-            padding: Design.Base.PaddingMargin.sm,
-            backgroundColor: colors.surfaceContainer,
-            borderBottomRightRadius: Design.Semantic.BorderRadius.circle,
-            borderTopRightRadius: Design.Semantic.BorderRadius.circle,
-          }}
-        >
-          <Button
-            icon="MdArrowBack"
-            themeColor="tertiary"
-            onPress={handleBack}
-          />
-        </div>
-      )}
+      {showHeader && <Header showBackButton={showBackButton} />}
+
       <main
         className="flex-grow"
         style={{

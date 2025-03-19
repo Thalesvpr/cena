@@ -4,6 +4,7 @@ import React from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { BaseColors, getForwardsColor } from "@/theme/themeColors";
 import { ThemedText, ThemedTextProps } from "./ThemedText";
+import { ReadingTexts } from "./Texts";
 
 interface MessageProps {
   text: string;
@@ -48,10 +49,10 @@ export const Message: React.FC<MessageProps> = ({
       )} */}
 
       {/* Texto com ThemedText */}
-      <ThemedText themeColor={themeTextColor} {...textProps}>
+      <ReadingTexts.Paragraph themeColor={themeTextColor} {...textProps}>
         {text}
         {/* {backgroundColor} */}
-      </ThemedText>
+      </ReadingTexts.Paragraph>
     </div>
   );
 };

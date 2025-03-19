@@ -26,7 +26,7 @@ export const ArticleComponent: React.FC<ArticleProps> = ({
     <div
       style={{
         gap: Design.Layout.reading.paragraphGap,
-        padding: Design.Base.PaddingMargin.lg,
+        padding: Design.Base.SpaceGaps.xxl,
         maxWidth: Design.Layout.reading.contentWidth,
         marginInline: "auto",
       }}
