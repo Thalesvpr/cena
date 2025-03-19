@@ -1,7 +1,8 @@
 import React from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { FontSizes, FontWeights, LineHeights } from "@/theme/themeConstants";
-import { ThemedText } from "@/widgets/ThemedText";
+import { Design } from "@/theme/themeConstants";
+import { ThemedText, ThemedTextProps } from "@/widgets/ThemedText";
+import { ReadingTexts } from "@/widgets/Texts";
 
 interface SectionProps {
   children?: React.ReactNode; // Conteúdo principal (opcional)
@@ -38,20 +39,7 @@ const Section: SectionComponent = ({ children, title, content }) => {
 };
 
 // Subcomponente Title
-Section.Title = ({ children }) => {
-  const textColor = useThemeColor("onSurface");
-
-  return (
-    <ThemedText
-      fontSize={FontSizes.xl}
-      fontWeight={FontWeights.medium}
-      color={textColor}
-      style={{ marginBottom: "10px" }}
-    >
-      {children}
-    </ThemedText>
-  );
-};
+Section.Title = (props: ThemedTextProps) => <ReadingTexts.Title {...props} />;
 
 // Subcomponente Content
 Section.Content = ({ children }) => {
