@@ -11,7 +11,7 @@ import { MdMenu } from "react-icons/md"; // Importe o ícone MdMenu
 import { Button } from "@/widgets/Button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { ThemedText } from "@/widgets/ThemedText";
-import { FontWeights } from "@/theme/themeConstants";
+import { Design } from "@/theme/themeConstants";
 
 export const Header = () => {
   const { toggleTheme, isDark } = useTheme();
@@ -44,12 +44,12 @@ export const Header = () => {
             priority
           />
           <div
-            className=" h-10 w-1"
+            className=" w-40 h-1 md:h-10 md:w-1"
             style={{ backgroundColor: colors.onSurface }}
           ></div>
           <ThemedText
             style={{ maxWidth: "170px" }}
-            fontWeight={FontWeights.light}
+            fontWeight={Design.Base.FontWeights.light}
           >
             {metadata.brand.logotext}
           </ThemedText>

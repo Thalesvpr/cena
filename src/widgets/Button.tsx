@@ -3,13 +3,13 @@ import { useThemeColor, useThemeColors } from "@/hooks/useThemeColor";
 import { IconName, getIcon } from "@/utils/iconUtils";
 import { BaseColors, getForwardsColor } from "@/theme/themeColors";
 import { Texts } from "./Texts";
-import { PaddingMargin, Sizes } from "@/theme/themeConstants";
+import { Design } from "@/theme/themeConstants";
 
 export interface ButtonProps {
   title?: string;
   themeColor?: BaseColors | "surface";
   outline?: boolean;
-  icon?: IconName; // Use a tipagem IconName
+  icon?: IconName;
   iconPosition?: "left" | "right";
   onPress?: () => void;
   disabled?: boolean;
@@ -45,49 +45,50 @@ export const Button: React.FC<ButtonProps> = ({
   const contentDirection =
     iconPosition === "left" ? "flex-row" : "flex-row-reverse";
 
-  // Carregue o ícone dinamicamente
+  // Load icon dynamically
   const IconComponent = icon ? getIcon(icon) : null;
 
+  // Create a stable button props object to avoid hydration mismatches
+  const buttonProps = {
+    className: `flex items-center justify-center rounded-full relative overflow-hidden ${
+      outline ? "border-2 bg-transparent" : raw ? "bg-transparent border-0" : ""
+    } ${disabled ? "opacity-50" : ""}`,
+    style: {
+      backgroundColor: outline || raw ? "transparent" : backgroundColor,
+      borderColor: outline ? borderColor : undefined,
+      height: Design.Semantic.Sizes.touchMinimal,
+      paddingInline: isIconOnly ? 0 : Design.Base.PaddingMargin.md,
+      width: isIconOnly ? Design.Semantic.Sizes.touchMinimal : "auto",
+      cursor: "pointer",
+    },
+    onClick: onPress,
+    disabled: disabled,
+    onMouseEnter: () => setIsHovered(true),
+    onMouseLeave: () => setIsHovered(false),
+    // Add this to let React handle the hydration mismatch for this property
+    suppressHydrationWarning: true,
+  };
+
   return (
-    <button
-      className={`flex items-center justify-center rounded-full relative overflow-hidden ${
-        outline
-          ? "border-2 bg-transparent"
-          : raw
-          ? "bg-transparent border-0"
-          : ""
-      } ${disabled ? "opacity-50" : ""}`}
-      style={{
-        backgroundColor: outline || raw ? "transparent" : backgroundColor,
-        borderColor: outline ? borderColor : undefined,
-        height: Sizes.touchMinimal,
-        paddingInline: isIconOnly ? 0 : PaddingMargin.md,
-        width: isIconOnly ? Sizes.touchMinimal : "auto",
-        cursor: "pointer",
-      }}
-      onClick={onPress}
-      disabled={disabled}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Bolinha animada */}
+    <button {...buttonProps}>
+      {/* Animated circle */}
       <div
         style={{
           position: "absolute",
-          bottom: isHovered ? "-170%" : "-100px", // Sobe ao entrar no hover
+          bottom: isHovered ? "-170%" : "-100px",
           left: "30%",
           transform: "translateX(-50%)",
           width: "100px",
           height: "100px",
-          backgroundColor: circleColor, // Cor do texto
+          backgroundColor: circleColor,
           borderRadius: "50%",
-          pointerEvents: "none", // Não interfere com cliques
-          opacity: isHovered ? 0.2 : 0, // Opacidade controlada pelo hover
-          transition: "bottom 0.3s ease-out, opacity 0.3s ease-out", // Transição suave
+          pointerEvents: "none",
+          opacity: isHovered ? 0.2 : 0,
+          transition: "bottom 0.3s ease-out, opacity 0.3s ease-out",
         }}
       />
 
-      {/* Conteúdo do botão */}
+      {/* Button content */}
       <div className={`flex ${contentDirection} items-center gap-2.5`}>
         {icon && (
           <div className="relative w-6 h-6 flex items-center justify-center">
@@ -96,7 +97,6 @@ export const Button: React.FC<ButtonProps> = ({
         )}
         {title && (
           <Texts.Button
-          
             themeColor={
               outline || raw
                 ? (`${themeColor}Container` as BaseColors)

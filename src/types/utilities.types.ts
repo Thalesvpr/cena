@@ -1,6 +1,6 @@
-export type Unit = "px" | "rem" | "em" | "%" | "vh" | "vw";
-export type Size = number | `${number}${Unit}`;
-export type Weight =
+type Unit = "px" | "rem" | "em" | "%" | "vh" | "vw";
+type Size = number | `${number}${Unit}`;
+type Weight =
   | "100"
   | "200"
   | "300"
@@ -10,4 +10,4 @@ export type Weight =
   | "700"
   | "800"
   | "900";
-export type DeviceType = "mobile" | "tablet" | "desktop" | "unknown";
+type DeviceType = "mobile" | "tablet" | "desktop" | "unknown";

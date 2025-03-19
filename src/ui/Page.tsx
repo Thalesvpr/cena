@@ -4,6 +4,7 @@ import React, { ReactNode } from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
+import { Design } from "@/theme/themeConstants";
 
 interface PageProps {
   children: ReactNode;
@@ -27,7 +28,17 @@ export const Page = ({
       style={{ backgroundColor }} // Aplica a cor de fundo
     >
       {showHeader && <Header />}
-      <main className="flex-grow">{children}</main>
+      <main
+        className="flex-grow"
+        style={{
+          paddingInline: Design.Layout.body.lateralPadding,
+          paddingBlock: Design.Layout.body.lateralPadding,
+          maxWidth: Design.Layout.body.maxWidth,
+          marginInline: "auto",
+        }}
+      >
+        {children}
+      </main>
       {showFooter && <Footer />}
     </div>
   );

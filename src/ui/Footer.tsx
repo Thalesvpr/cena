@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { SocialLinks } from "./SocialLinks";
 import { metadata } from "@/metadata";
-import { BodyTexts } from "@/widgets/Texts";
+import { ReadingTexts } from "@/widgets/Texts";
 
 export const Footer = () => {
   const surfaceColor = useThemeColor("surface");
@@ -23,19 +23,19 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Seção da Marca */}
         <div>
-          <BodyTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
+          <ReadingTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
             {metadata.brand.name}
-          </BodyTexts.Subtitle>
-          <BodyTexts.Description>
+          </ReadingTexts.Subtitle>
+          <ReadingTexts.Description>
             {metadata.brand.description}
-          </BodyTexts.Description>
+          </ReadingTexts.Description>
         </div>
 
         {/* Navegação no Footer */}
         <nav>
-          <BodyTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
+          <ReadingTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
             Navegação
-          </BodyTexts.Subtitle>
+          </ReadingTexts.Subtitle>
           <ul className="flex flex-col gap-2">
             {metadata.navigation.footer.map((route, index) => (
               <li key={index}>
@@ -52,9 +52,9 @@ export const Footer = () => {
 
         {/* Redes Sociais */}
         <div>
-          <BodyTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
+          <ReadingTexts.Subtitle themeColor="onSurfaceVariant" className="mb-4">
             Siga-nos
-          </BodyTexts.Subtitle>
+          </ReadingTexts.Subtitle>
           <SocialLinks />
         </div>
       </div>

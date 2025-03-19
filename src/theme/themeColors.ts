@@ -19,7 +19,7 @@ export function generateColors(sourceColorHex: string, isDark: boolean) {
   const theme = themeFromSourceColor(sourceColorArgb);
   const { primary, secondary, tertiary, neutral, error } = theme.palettes;
 
-  const containerBoolean = isDark ? 50 : 90;
+  const containerBoolean = isDark ? 50 : 80;
   const onContainerBoolean = isDark ? 100 : 10;
 
   return {

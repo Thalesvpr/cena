@@ -1,4 +1,3 @@
-import { DeviceType } from "@/types/utilities.types";
 import { useState, useEffect } from "react";
 
 const useMedia = (): DeviceType => {

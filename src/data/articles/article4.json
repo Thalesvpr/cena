@@ -1,0 +1,70 @@
+{
+  "id": 7,
+  "title": "A Reforma Tributária e Seus Impactos no Brasil",
+  "img": {
+    "type": "image",
+    "url": "https://example.com/reforma-tributaria.jpg",
+    "alt": "Imagem sobre reforma tributária"
+  },
+  "subtitle": "O que muda para empresas e cidadãos?",
+  "category": "politica",
+  "author": "Luciana Fernandes",
+  "date": "2023-10-10",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "A reforma tributária é um dos temas mais debatidos no Brasil atualmente. Com o objetivo de simplificar o sistema de impostos, a proposta promete impactar empresas, trabalhadores e consumidores."
+    },
+    {
+      "type": "message",
+      "text": "Mas, o que é a reforma?",
+      "style": "info"
+    },
+    {
+      "type": "paragraph",
+      "text": "A reforma pretende unificar tributos federais, estaduais e municipais em um único imposto sobre o consumo. A ideia é reduzir a burocracia e tornar o sistema mais justo e eficiente."
+    },
+    {
+      "type": "message",
+      "text": "E os benefícios?",
+      "style": "info"
+    },
+    {
+      "type": "paragraph",
+      "text": "A simplificação pode reduzir custos para empresas, estimular investimentos e facilitar a vida do contribuinte. Além disso, a reforma pode aumentar a arrecadação e melhorar a distribuição de recursos entre estados e municípios."
+    },
+    {
+      "type": "quote",
+      "text": "A reforma tributária é essencial para modernizar a economia brasileira.",
+      "author": "Economista"
+    },
+    {
+      "type": "image",
+      "url": "https://example.com/impostos.jpg",
+      "alt": "Imagem sobre impostos no Brasil"
+    },
+    {
+      "type": "message",
+      "text": "E os desafios?",
+      "style": "info"
+    },
+    {
+      "type": "paragraph",
+      "text": "A implementação da reforma enfrenta resistência de setores que podem perder benefícios fiscais. Além disso, há o risco de aumento de preços para o consumidor em alguns setores."
+    },
+    {
+      "type": "message",
+      "text": "E o impacto nos estados?",
+      "style": "info"
+    },
+    {
+      "type": "paragraph",
+      "text": "Estados mais pobres podem se beneficiar com a redistribuição de recursos, enquanto estados mais ricos podem perder parte de sua arrecadação. O equilíbrio é um dos maiores desafios da reforma."
+    },
+    {
+      "type": "message",
+      "text": "Você acredita que a reforma trará benefícios?",
+      "style": "info"
+    }
+  ]
+}

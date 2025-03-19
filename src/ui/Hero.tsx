@@ -3,10 +3,10 @@
 import React from "react";
 import { metadata } from "../metadata";
 import { Button } from "@/widgets/Button";
-import { BodyTexts, Texts } from "@/widgets/Texts";
+import { ReadingTexts, Texts } from "@/widgets/Texts";
 import { IconName } from "@/utils/iconUtils";
 import Link from "next/link";
-import { PaddingMargin } from "@/theme/themeConstants";
+import { Design } from "@/theme/themeConstants";
 import Img from "@/widgets/Img";
 import { ThemedText } from "@/widgets/ThemedText";
 import useMedia from "@/hooks/useMidia";
@@ -16,12 +16,14 @@ export const HeroSection = () => {
   return (
     <section
       className="relative h-[600px] md:h-90 flex items-center justify-center"
-      style={{
-        paddingInline: PaddingMargin.lg,
-        paddingBlock: PaddingMargin.lg,
-      }}
+      style={
+        {
+          // paddingInline: Design.lg,
+          // paddingBlock: Design.lg,
+        }
+      }
     >
-      <div className="w-full flex flex-col items-center justify-center gap-12 md:flex-row">
+      <div className="w-full flex flex-col items-center justify-between gap-12 md:flex-row">
         <Img
           src={metadata.sections.hero.biglogourl}
           alt="Logo"

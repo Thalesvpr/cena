@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { BaseColors } from "@/theme/themeColors";
-import { Size, Weight } from "@/types/utilities.types";
 import useMedia from "@/hooks/useMidia";
+import styles from "@/styles/ThemedText.module.css";
+import { Design } from "@/theme/themeConstants";
 
 export type ThemedTextProps = React.HTMLAttributes<HTMLParagraphElement> & {
   themeColor?: BaseColors;
@@ -13,6 +14,11 @@ export type ThemedTextProps = React.HTMLAttributes<HTMLParagraphElement> & {
   fontWeight?: Weight;
   lineHeight?: number | string;
   nowrap?: boolean;
+  highlightFirstLetter?: boolean;
+  firstLetterColor?: BaseColors;
+  firstLetterSize?: number | string;
+  firstLetterWeight?: number | string;
+  firstLetterlineHeight?: number | string;
 };
 
 /**
@@ -57,44 +63,101 @@ export function ThemedText({
   lineHeight,
   responsive = true,
   nowrap,
+  highlightFirstLetter = false,
+  firstLetterColor = "tertiary",
+  firstLetterSize = Design.Semantic.FontSizes.firstLetter,
+  firstLetterWeight = Design.Semantic.FontSizes.firstLetter,
+  firstLetterlineHeight = Design.Semantic.FontSizes.firstLetter,
+
+  className,
   ...rest
 }: ThemedTextProps) {
   const color = useThemeColor(themeColor);
+  const firstLetterThemeColor = useThemeColor(firstLetterColor);
   const midia = useMedia();
 
-  // Define os fatores de escala para diferentes dispositivos
-  const scaleFactors = {
-    desktop: 1, // Sem escala para desktop
-    tablet: 1.2,
-    mobile: 1.5,
-    unknown: 1, // Padrao
-  };
-
-  // Obtém o fator de escala com base no dispositivo
-  const scaleFactor = scaleFactors[midia] || 1;
-
-  // Aplica a escala ao fontSize
-  const scaledFontSize =
-    fontSize !== undefined && isValidFontSize(fontSize)
-      ? applyFontSizeScale(fontSize, scaleFactor)
-      : undefined;
-
-  return (
-    <p
-      style={{
-        color,
-        fontSize: responsive ? scaledFontSize : fontSize, // Aplica o fontSize escalado
-        fontWeight,
-        lineHeight:
-          lineHeight !== undefined
-            ? typeof lineHeight === "number"
-              ? `${lineHeight}px` // Converte número para px
-              : lineHeight // Mantém a string com unidades
-            : undefined,
-        whiteSpace: nowrap ? "nowrap" : undefined,
-        ...style,
-      }}
-      {...rest}
-    />
+  // Memorize os fatores de escala
+  const scaleFactors = useMemo(
+    () => ({
+      desktop: 1, // Sem escala para desktop
+      tablet: 1.2,
+      mobile: 1.5,
+      unknown: 1, // Padrao
+    }),
+    []
   );
+
+  // Memorize o fator de escala baseado na mídia
+  const scaleFactor = useMemo(
+    () => scaleFactors[midia] || 1,
+    [scaleFactors, midia]
+  );
+
+  // Memorize o cálculo do fontSize escalado
+  const scaledFontSize = useMemo(() => {
+    if (fontSize === undefined || !isValidFontSize(fontSize)) return undefined;
+    return applyFontSizeScale(fontSize, scaleFactor);
+  }, [fontSize, scaleFactor]);
+
+  // Memorize a combinação de classNames
+  const combinedClassName = useMemo(
+    () =>
+      `${className || ""} ${
+        highlightFirstLetter ? styles.highlightFirstLetter : ""
+      }`.trim(),
+    [className, highlightFirstLetter]
+  );
+
+  // Memorize as variáveis CSS para estilização da primeira letra
+  const cssVariables = useMemo(() => {
+    if (!highlightFirstLetter) return {};
+
+    return {
+      "--first-letter-color": firstLetterThemeColor,
+      "--first-letter-size":
+        typeof firstLetterSize === "number"
+          ? `${firstLetterSize}px`
+          : firstLetterSize,
+      "--first-letter-weight":
+        typeof firstLetterWeight === "number"
+          ? `${firstLetterWeight}px`
+          : firstLetterWeight,
+      "--first-letter-line":
+        typeof firstLetterlineHeight === "number"
+          ? `${firstLetterlineHeight}px`
+          : firstLetterlineHeight,
+      "--first-letter-gap": `${Design.Base.PaddingMargin.md}px`,
+    };
+  }, [highlightFirstLetter, firstLetterThemeColor, firstLetterSize]);
+
+  // Memorize o objeto de estilo completo
+  const completeStyle = useMemo(
+    () => ({
+      color,
+      fontSize: responsive ? scaledFontSize : fontSize,
+      fontWeight,
+      lineHeight:
+        lineHeight !== undefined
+          ? typeof lineHeight === "number"
+            ? `${lineHeight}px`
+            : lineHeight
+          : undefined,
+      whiteSpace: nowrap ? "nowrap" : undefined,
+      ...cssVariables,
+      ...style,
+    }),
+    [
+      color,
+      responsive,
+      scaledFontSize,
+      fontSize,
+      fontWeight,
+      lineHeight,
+      nowrap,
+      cssVariables,
+      style,
+    ]
+  );
+
+  return <p className={combinedClassName} style={completeStyle} {...rest} />;
 }

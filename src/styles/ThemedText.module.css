@@ -1,0 +1,9 @@
+.highlightFirstLetter::first-letter {
+  font-size: var(--first-letter-size);
+  font-weight: var(--first-letter-weight);
+  line-height: var(--first-letter-line);
+
+  color: var(--first-letter-color);
+  float: left;
+  margin-right: var(--first-letter-gap);
+}
